@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Direcciones IP</title>
+    <style>
+        body {
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f0f0f;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: #e5e5e5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: #1a1a1a;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid #333;
+        }
+        
+        .title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #e5e5e5;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #dc2626;
+            padding-bottom: 1rem;
+        }
+        
+        .input-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .input-field {
+            position: relative;
+        }
+        
+        .input-field label {
+            display: block;
+            font-weight: 600;
+            color: #d1d5db;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .input-field input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #404040;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #262626;
+            color: #e5e5e5;
+        }
+        
+        .input-field input:focus {
+            outline: none;
+            border-color: #dc2626;
+            box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2);
+        }
+        
+        .calculate-btn {
+            width: 100%;
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .calculate-btn:hover {
+            background: #b91c1c;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .result-card {
+            background: #262626;
+            border-radius: 6px;
+            padding: 1.5rem;
+            border-left: 4px solid;
+            border: 1px solid #404040;
+        }
+        
+        .result-card.network { border-left-color: #dc2626; }
+        .result-card.classification { border-left-color: #dc2626; }
+        .result-card.range { border-left-color: #dc2626; }
+        
+        .result-card h3 {
+            margin: 0 0 1rem 0;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #e5e5e5;
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            padding: 0.5rem;
+            background: #1a1a1a;
+            border-radius: 4px;
+            border: 1px solid #404040;
+        }
+        
+        .result-label {
+            font-weight: 600;
+            color: #d1d5db;
+        }
+        
+        .result-value {
+            font-family: 'Monaco', 'Menlo', monospace;
+            background: #0f0f0f;
+            color: #dc2626;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            border: 1px solid #404040;
+        }
+        
+        .binary-section {
+            background: #1a1a1a;
+            color: white;
+            border-radius: 6px;
+            padding: 2rem;
+            margin-top: 2rem;
+            border: 1px solid #333;
+        }
+        
+        .binary-section h3 {
+            color: #e5e5e5;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            text-align: center;
+            border-bottom: 1px solid #dc2626;
+            padding-bottom: 0.5rem;
+        }
+        
+        .binary-item {
+            background: #262626;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #404040;
+        }
+        
+        .binary-label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #d1d5db;
+        }
+        
+        .binary-value {
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+            word-break: break-all;
+            line-height: 1.6;
+            background: #0f0f0f;
+            padding: 0.75rem;
+            border-radius: 4px;
+            border: 1px solid #404040;
+        }
+        
+        .network-portion { color: #dc2626; }
+        .host-portion { color: #9ca3af; }
+        
+        .hidden { display: none; }
+        
+        .range-display {
+            text-align: center;
+            font-size: 1.2rem;
+            font-family: 'Monaco', 'Menlo', monospace;
+            background: #0f0f0f;
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 4px;
+            border: 2px solid #dc2626;
+        }
+        
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1 class="title">Calculadora de Direcciones IP</h1>
+            
+            <form id="ipForm">
+                <div class="input-group">
+                    <div class="input-field">
+                        <label for="ipAddress">
+                            Dirección IP
+                        </label>
+                        <input type="text" id="ipAddress" placeholder="192.168.1.100" autocomplete="off">
+                        <small style="color: #6b7280; font-size: 0.8rem;">Formato: X.X.X.X</small>
+                    </div>
+                    
+                    <div class="input-field">
+                        <label for="subnetMask">
+                            Máscara de Subred
+                        </label>
+                        <input type="text" id="subnetMask" placeholder="255.255.255.0" autocomplete="off">
+                        <small style="color: #6b7280; font-size: 0.8rem;">Formato: X.X.X.X (no CIDR)</small>
+                    </div>
+                </div>
+                
+                <button type="submit" class="calculate-btn">
+                    Calcular Información de Red
+                </button>
+            </form>
+        </div>
+
+        <div id="results">
+            <div class="card">
+                <h2 style="text-align: center; color: #e5e5e5; margin-bottom: 2rem; font-size: 2rem;">
+                    Resultados del Análisis
+                </h2>
+                
+                <div class="results-grid">
+                    <div class="result-card network">
+                        <h3>Información de Red</h3>
+                        <div class="result-item">
+                            <span class="result-label">IP de Red:</span>
+                            <span class="result-value" id="networkIP">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">IP de Broadcast:</span>
+                            <span class="result-value" id="broadcastIP">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Hosts Útiles:</span>
+                            <span class="result-value" id="usableHosts">-</span>
+                        </div>
+                    </div>
+                    
+                    <div class="result-card classification">
+                        <h3>Clasificación</h3>
+                        <div class="result-item">
+                            <span class="result-label">Clase de IP:</span>
+                            <span class="result-value" id="ipClass">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Tipo:</span>
+                            <span class="result-value" id="ipType">-</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="result-card range">
+                    <h3 style="text-align: center;">Rango de IPs Útiles</h3>
+                    <div class="range-display" id="ipRange">Ingrese una IP y máscara para calcular</div>
+                </div>
+                
+                <div class="binary-section">
+                    <h3>Representación Binaria</h3>
+                    
+                    <div class="binary-item">
+                        <div class="binary-label">IP Original:</div>
+                        <div class="binary-value" id="originalIPBinary">-</div>
+                    </div>
+                    
+                    <div class="binary-item">
+                        <div class="binary-label">Máscara de Subred:</div>
+                        <div class="binary-value" id="maskBinary">-</div>
+                    </div>
+                    
+                    <div class="binary-item">
+                        <div class="binary-label">Porción de Red:</div>
+                        <div class="binary-value network-portion" id="networkPortion">-</div>
+                    </div>
+                    
+                    <div class="binary-item">
+                        <div class="binary-label">Porción de Hosts:</div>
+                        <div class="binary-value host-portion" id="hostPortion">-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('ipForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            calculateNetworkInfo();
+        });
+
+        function calculateNetworkInfo() {
+            const ipInput = document.getElementById('ipAddress').value.trim();
+            const maskInput = document.getElementById('subnetMask').value.trim();
+
+            if (!validateIP(ipInput) || !validateIP(maskInput)) {
+                alert('Error: Por favor, ingrese direcciones IP válidas en formato X.X.X.X');
+                return;
+            }
+
+            if (!validateSubnetMask(maskInput)) {
+                alert('Error: La máscara de subred no es válida. Debe ser una máscara contigua.');
+                return;
+            }
+
+            const ip = ipInput.split('.').map(Number);
+            const mask = maskInput.split('.').map(Number);
+
+            // Calcular IP de red
+            const networkIP = ip.map((octet, i) => octet & mask[i]);
+            
+            // Calcular IP de broadcast
+            const broadcastIP = networkIP.map((octet, i) => octet | (255 - mask[i]));
+            
+            // Calcular hosts útiles
+            const hostBits = mask.reduce((bits, octet) => bits + (8 - countBits(octet)), 0);
+            const totalHosts = Math.pow(2, hostBits);
+            const usableHosts = Math.max(0, totalHosts - 2); // Excluir red y broadcast
+            
+            // Determinar clase de IP
+            const ipClass = getIPClass(ip[0]);
+            
+            // Determinar si es pública o privada
+            const ipType = isPrivateIP(ip) ? 'Privada' : 'Pública';
+            
+            // Rango de IPs útiles
+            let firstUsable, lastUsable;
+            if (usableHosts > 0) {
+                firstUsable = [...networkIP];
+                firstUsable[3] += 1;
+                lastUsable = [...broadcastIP];
+                lastUsable[3] -= 1;
+            }
+            
+            // Representación binaria
+            const ipBinary = ip.map(octet => octet.toString(2).padStart(8, '0')).join('.');
+            const maskBinary = mask.map(octet => octet.toString(2).padStart(8, '0')).join('.');
+            
+            // Porciones de red y host
+            const networkPortion = getNetworkPortion(ip, mask);
+            const hostPortion = getHostPortion(ip, mask);
+
+            // Mostrar resultados
+            displayResults({
+                networkIP: networkIP.join('.'),
+                broadcastIP: broadcastIP.join('.'),
+                usableHosts: usableHosts.toLocaleString(),
+                ipClass: ipClass,
+                ipType: ipType,
+                ipRange: usableHosts > 0 ? `${firstUsable.join('.')} - ${lastUsable.join('.')}` : 'No hay IPs útiles disponibles',
+                originalIPBinary: ipBinary,
+                maskBinary: maskBinary,
+                networkPortion: networkPortion,
+                hostPortion: hostPortion
+            });
+        }
+
+        function validateIP(ip) {
+            const pattern = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
+            const match = ip.match(pattern);
+            if (!match) return false;
+            
+            return match.slice(1).every(octet => {
+                const num = parseInt(octet);
+                return num >= 0 && num <= 255;
+            });
+        }
+
+        function validateSubnetMask(mask) {
+            const octets = mask.split('.').map(Number);
+            const binary = octets.map(octet => octet.toString(2).padStart(8, '0')).join('');
+            
+            // Verificar que sea una máscara contigua (todos los 1s seguidos de todos los 0s)
+            const match = binary.match(/^(1*)(0*)$/);
+            return match !== null;
+        }
+
+        function countBits(num) {
+            let count = 0;
+            while (num) {
+                count += num & 1;
+                num >>= 1;
+            }
+            return count;
+        }
+
+        function getIPClass(firstOctet) {
+            if (firstOctet >= 1 && firstOctet <= 126) return 'Clase A';
+            if (firstOctet >= 128 && firstOctet <= 191) return 'Clase B';
+            if (firstOctet >= 192 && firstOctet <= 223) return 'Clase C';
+            if (firstOctet >= 224 && firstOctet <= 239) return 'Clase D (Multicast)';
+            if (firstOctet >= 240 && firstOctet <= 255) return 'Clase E (Experimental)';
+            return 'Reservada';
+        }
+
+        function isPrivateIP(ip) {
+            // Clase A: 10.0.0.0/8
+            if (ip[0] === 10) return true;
+            
+            // Clase B: 172.16.0.0/12
+            if (ip[0] === 172 && ip[1] >= 16 && ip[1] <= 31) return true;
+            
+            // Clase C: 192.168.0.0/16
+            if (ip[0] === 192 && ip[1] === 168) return true;
+            
+            // Loopback
+            if (ip[0] === 127) return true;
+            
+            return false;
+        }
+
+        function getNetworkPortion(ip, mask) {
+            const networkBits = [];
+            const ipBinary = ip.map(octet => octet.toString(2).padStart(8, '0')).join('');
+            const maskBinary = mask.map(octet => octet.toString(2).padStart(8, '0')).join('');
+            
+            for (let i = 0; i < 32; i++) {
+                if (maskBinary[i] === '1') {
+                    networkBits.push(ipBinary[i]);
+                } else {
+                    networkBits.push('0');
+                }
+            }
+            
+            return networkBits.join('').match(/.{8}/g).join('.');
+        }
+
+        function getHostPortion(ip, mask) {
+            const hostBits = [];
+            const ipBinary = ip.map(octet => octet.toString(2).padStart(8, '0')).join('');
+            const maskBinary = mask.map(octet => octet.toString(2).padStart(8, '0')).join('');
+            
+            for (let i = 0; i < 32; i++) {
+                if (maskBinary[i] === '0') {
+                    hostBits.push(ipBinary[i]);
+                } else {
+                    hostBits.push('0');
+                }
+            }
+            
+            return hostBits.join('').match(/.{8}/g).join('.');
+        }
+
+        function displayResults(data) {
+            document.getElementById('networkIP').textContent = data.networkIP;
+            document.getElementById('broadcastIP').textContent = data.broadcastIP;
+            document.getElementById('usableHosts').textContent = data.usableHosts;
+            document.getElementById('ipClass').textContent = data.ipClass;
+            document.getElementById('ipType').textContent = data.ipType;
+            document.getElementById('ipRange').textContent = data.ipRange;
+            document.getElementById('originalIPBinary').textContent = data.originalIPBinary;
+            document.getElementById('maskBinary').textContent = data.maskBinary;
+            document.getElementById('networkPortion').textContent = data.networkPortion;
+            document.getElementById('hostPortion').textContent = data.hostPortion;
+            
+
+        }
+
+        // Agregar algunos ejemplos comunes al hacer clic en los placeholders
+        document.getElementById('ipAddress').addEventListener('focus', function() {
+            if (!this.value) {
+                this.placeholder = 'Ej: 192.168.1.100, 10.0.0.1, 172.16.1.1';
+            }
+        });
+
+        document.getElementById('subnetMask').addEventListener('focus', function() {
+            if (!this.value) {
+                this.placeholder = 'Ej: 255.255.255.0, 255.255.0.0, 255.0.0.0';
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9899f2f59687f776',t:'MTc1OTYzNjE2Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
