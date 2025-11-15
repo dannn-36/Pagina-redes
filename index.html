@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Direcciones IP</title>
-    <style>
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Direcciones IP</title>
+  <style>
         body {
             box-sizing: border-box;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -207,107 +207,319 @@
             font-size: 1.2em;
             margin-right: 0.5rem;
         }
+
+        /* Navigation Styles */
+        .nav-bar {
+            background: #1a1a1a;
+            border-bottom: 2px solid #dc2626;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .nav-brand {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #dc2626;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav-link {
+            background: transparent;
+            border: 2px solid #404040;
+            color: #d1d5db;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            border-color: #dc2626;
+            color: #dc2626;
+        }
+
+        .nav-link.active {
+            background: #dc2626;
+            border-color: #dc2626;
+            color: white;
+        }
+
+        /* Section Styles */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Skills Section Styles */
+        .profile-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background: #262626;
+            border-radius: 8px;
+            border: 1px solid #404040;
+        }
+
+        .profile-name {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #e5e5e5;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-title {
+            font-size: 1.2rem;
+            color: #dc2626;
+            margin-bottom: 1rem;
+        }
+
+        .profile-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .profile-link {
+            color: #9ca3af;
+            text-decoration: none;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.9rem;
+        }
+
+        .profile-link:hover {
+            color: #dc2626;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-category {
+            background: #262626;
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid #404040;
+            border-left: 4px solid #dc2626;
+        }
+
+        .skill-category h3 {
+            color: #e5e5e5;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .skill-tag {
+            background: #1a1a1a;
+            color: #d1d5db;
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            border: 1px solid #404040;
+        }
+
+        .summary-text {
+            background: #262626;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #404040;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            color: #d1d5db;
+        }
+
+        .education-section {
+            background: #262626;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #404040;
+            border-left: 4px solid #dc2626;
+            margin-bottom: 2rem;
+        }
+
+        .education-title {
+            color: #e5e5e5;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .education-details {
+            color: #d1d5db;
+            line-height: 1.6;
+        }
+
+        .education-focus {
+            margin-top: 1rem;
+            font-style: italic;
+            color: #9ca3af;
+        }
     </style>
-</head>
-<body>
-    <div class="container">
-        <div class="card">
-            <h1 class="title">Calculadora de Direcciones IP</h1>
-            
-            <form id="ipForm">
-                <div class="input-group">
-                    <div class="input-field">
-                        <label for="ipAddress">
-                            Dirección IP
-                        </label>
-                        <input type="text" id="ipAddress" placeholder="192.168.1.100" autocomplete="off">
-                        <small style="color: #6b7280; font-size: 0.8rem;">Formato: X.X.X.X</small>
-                    </div>
-                    
-                    <div class="input-field">
-                        <label for="subnetMask">
-                            Máscara de Subred
-                        </label>
-                        <input type="text" id="subnetMask" placeholder="255.255.255.0" autocomplete="off">
-                        <small style="color: #6b7280; font-size: 0.8rem;">Formato: X.X.X.X (no CIDR)</small>
-                    </div>
-                </div>
-                
-                <button type="submit" class="calculate-btn">
-                    Calcular Información de Red
-                </button>
-            </form>
-        </div>
-
-        <div id="results">
-            <div class="card">
-                <h2 style="text-align: center; color: #e5e5e5; margin-bottom: 2rem; font-size: 2rem;">
-                    Resultados del Análisis
-                </h2>
-                
-                <div class="results-grid">
-                    <div class="result-card network">
-                        <h3>Información de Red</h3>
-                        <div class="result-item">
-                            <span class="result-label">IP de Red:</span>
-                            <span class="result-value" id="networkIP">-</span>
-                        </div>
-                        <div class="result-item">
-                            <span class="result-label">IP de Broadcast:</span>
-                            <span class="result-value" id="broadcastIP">-</span>
-                        </div>
-                        <div class="result-item">
-                            <span class="result-label">Hosts Útiles:</span>
-                            <span class="result-value" id="usableHosts">-</span>
-                        </div>
-                    </div>
-                    
-                    <div class="result-card classification">
-                        <h3>Clasificación</h3>
-                        <div class="result-item">
-                            <span class="result-label">Clase de IP:</span>
-                            <span class="result-value" id="ipClass">-</span>
-                        </div>
-                        <div class="result-item">
-                            <span class="result-label">Tipo:</span>
-                            <span class="result-value" id="ipType">-</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="result-card range">
-                    <h3 style="text-align: center;">Rango de IPs Útiles</h3>
-                    <div class="range-display" id="ipRange">Ingrese una IP y máscara para calcular</div>
-                </div>
-                
-                <div class="binary-section">
-                    <h3>Representación Binaria</h3>
-                    
-                    <div class="binary-item">
-                        <div class="binary-label">IP Original:</div>
-                        <div class="binary-value" id="originalIPBinary">-</div>
-                    </div>
-                    
-                    <div class="binary-item">
-                        <div class="binary-label">Máscara de Subred:</div>
-                        <div class="binary-value" id="maskBinary">-</div>
-                    </div>
-                    
-                    <div class="binary-item">
-                        <div class="binary-label">Porción de Red:</div>
-                        <div class="binary-value network-portion" id="networkPortion">-</div>
-                    </div>
-                    
-                    <div class="binary-item">
-                        <div class="binary-label">Porción de Hosts:</div>
-                        <div class="binary-value host-portion" id="hostPortion">-</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="container"><!-- Navigation -->
+   <nav class="nav-bar">
+    <div class="nav-container">
+     <div class="nav-brand">
+      Daniel Villamil
+     </div>
+     <div class="nav-links"><button class="nav-link active" data-section="calculator">Calculadora IP</button> <button class="nav-link" data-section="skills">Skills</button>
+     </div>
     </div>
-
-    <script>
+   </nav><!-- Calculator Section -->
+   <div id="calculator-section" class="section active">
+    <div class="card">
+     <h1 class="title">Calculadora de Direcciones IP</h1>
+     <form id="ipForm">
+      <div class="input-group">
+       <div class="input-field"><label for="ipAddress"> Dirección IP </label> <input type="text" id="ipAddress" placeholder="192.168.1.100" autocomplete="off"> <small style="color: #6b7280; font-size: 0.8rem;">Formato: X.X.X.X</small>
+       </div>
+       <div class="input-field"><label for="subnetMask"> Máscara de Subred </label> <input type="text" id="subnetMask" placeholder="255.255.255.0" autocomplete="off"> <small style="color: #6b7280; font-size: 0.8rem;">Formato: X.X.X.X (no CIDR)</small>
+       </div>
+      </div><button type="submit" class="calculate-btn"> Calcular Información de Red </button>
+     </form>
+    </div>
+    <div id="results">
+     <div class="card">
+      <h2 style="text-align: center; color: #e5e5e5; margin-bottom: 2rem; font-size: 2rem;">Resultados del Análisis</h2>
+      <div class="results-grid">
+       <div class="result-card network">
+        <h3>Información de Red</h3>
+        <div class="result-item"><span class="result-label">IP de Red:</span> <span class="result-value" id="networkIP">-</span>
+        </div>
+        <div class="result-item"><span class="result-label">IP de Broadcast:</span> <span class="result-value" id="broadcastIP">-</span>
+        </div>
+        <div class="result-item"><span class="result-label">Hosts Útiles:</span> <span class="result-value" id="usableHosts">-</span>
+        </div>
+       </div>
+       <div class="result-card classification">
+        <h3>Clasificación</h3>
+        <div class="result-item"><span class="result-label">Clase de IP:</span> <span class="result-value" id="ipClass">-</span>
+        </div>
+        <div class="result-item"><span class="result-label">Tipo:</span> <span class="result-value" id="ipType">-</span>
+        </div>
+       </div>
+      </div>
+      <div class="result-card range">
+       <h3 style="text-align: center;">Rango de IPs Útiles</h3>
+       <div class="range-display" id="ipRange">
+        Ingrese una IP y máscara para calcular
+       </div>
+      </div>
+      <div class="binary-section">
+       <h3>Representación Binaria</h3>
+       <div class="binary-item">
+        <div class="binary-label">
+         IP Original:
+        </div>
+        <div class="binary-value" id="originalIPBinary">
+         -
+        </div>
+       </div>
+       <div class="binary-item">
+        <div class="binary-label">
+         Máscara de Subred:
+        </div>
+        <div class="binary-value" id="maskBinary">
+         -
+        </div>
+       </div>
+       <div class="binary-item">
+        <div class="binary-label">
+         Porción de Red:
+        </div>
+        <div class="binary-value network-portion" id="networkPortion">
+         -
+        </div>
+       </div>
+       <div class="binary-item">
+        <div class="binary-label">
+         Porción de Hosts:
+        </div>
+        <div class="binary-value host-portion" id="hostPortion">
+         -
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div><!-- Skills Section -->
+   <div id="skills-section" class="section">
+    <div class="card">
+     <div class="profile-header">
+      <h1 class="profile-name">Daniel Villamil</h1>
+      <p class="profile-title">Ingeniería de Sistemas · Sistemas Embebidos e IA · Desarrollador Fullstack</p>
+      <div class="profile-links"><a href="https://www.linkedin.com/in/daniel-villamil-611146342" target="_blank" rel="noopener noreferrer" class="profile-link"> linkedin.com/in/daniel-villamil-611146342 </a> <a href="https://github.com/dannn-36" target="_blank" rel="noopener noreferrer" class="profile-link"> github.com/dannn-36 </a>
+      </div>
+     </div>
+     <div class="summary-text">
+      <h3 style="color: #e5e5e5; margin-bottom: 1rem;">Resumen</h3>
+      <p>Estudiante de Ingeniería de Sistemas con una sólida formación en ciencias de la computación, bases de datos, desarrollo backend y sistemas embebidos. Con experiencia en inteligencia artificial, microcontroladores, sistemas backend e investigación académica. Aprendiz rápido con pasión por el código limpio, la arquitectura de sistemas y el desarrollo de software escalable.</p>
+     </div>
+     <div class="education-section">
+      <h3 class="education-title">Educación</h3>
+      <div class="education-details"><strong>Ingeniería de Sistemas – Universidad El Bosque – Estudiante actual</strong><br>
+        Bogotá, Colombia 
+       <div class="education-focus"><strong>Áreas de enfoque:</strong> Ingeniería de Software, Inteligencia Artificial, Microprocesadores, Complejidad Algorítmica, Administración de Bases de Datos, Sistemas Operativos, Ensamblador, Desarrollo de Software.
+       </div>
+      </div>
+     </div>
+     <div class="skills-grid">
+      <div class="skill-category">
+       <h3>Lenguajes</h3>
+       <div class="skill-list"><span class="skill-tag">Python</span> <span class="skill-tag">Java</span> <span class="skill-tag">TypeScript</span> <span class="skill-tag">JavaScript</span> <span class="skill-tag">C</span> <span class="skill-tag">C++</span> <span class="skill-tag">C#</span> <span class="skill-tag">SQL</span> <span class="skill-tag">PL/SQL</span>
+       </div>
+      </div>
+      <div class="skill-category">
+       <h3>Frameworks / Herramientas</h3>
+       <div class="skill-list"><span class="skill-tag">ASP.NET Core</span> <span class="skill-tag">Flask</span> <span class="skill-tag">FastAPI</span> <span class="skill-tag">Flet</span> <span class="skill-tag">TensorFlow</span> <span class="skill-tag">Entity Framework</span> <span class="skill-tag">Git</span> <span class="skill-tag">GitHub</span> <span class="skill-tag">MySQL</span> <span class="skill-tag">PostgreSQL</span> <span class="skill-tag">ESP-IDF</span> <span class="skill-tag">Springboot</span> <span class="skill-tag">Maven</span> <span class="skill-tag">Angular</span> <span class="skill-tag">React</span>
+       </div>
+      </div>
+      <div class="skill-category">
+       <h3>Conceptos</h3>
+       <div class="skill-list"><span class="skill-tag">POO</span> <span class="skill-tag">APIs REST</span> <span class="skill-tag">CRUD</span> <span class="skill-tag">Sistemas Operativos</span> <span class="skill-tag">Sistemas Embebidos</span> <span class="skill-tag">CNNs</span> <span class="skill-tag">Arquitectura de Sistemas</span> <span class="skill-tag">Docker</span> <span class="skill-tag">Matemáticas Aplicadas</span> <span class="skill-tag">Ingeniería de Software</span> <span class="skill-tag">Estructuras de Datos y Algoritmos</span> <span class="skill-tag">Diseño de Bases de Datos</span> <span class="skill-tag">Redes de Computadores</span> <span class="skill-tag">Metodologías Ágiles y Scrum</span> <span class="skill-tag">Control de Versiones (Git/GitHub)</span>
+       </div>
+      </div>
+      <div class="skill-category">
+       <h3>Idiomas</h3>
+       <div class="skill-list"><span class="skill-tag">Español (Nativo)</span> <span class="skill-tag">Inglés (C1)</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
         document.getElementById('ipForm').addEventListener('submit', function(e) {
             e.preventDefault();
             calculateNetworkInfo();
@@ -480,6 +692,30 @@
 
         }
 
+        // Navigation functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.section');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    const targetSection = this.getAttribute('data-section');
+                    
+                    // Remove active class from all nav links
+                    navLinks.forEach(nav => nav.classList.remove('active'));
+                    
+                    // Add active class to clicked nav link
+                    this.classList.add('active');
+                    
+                    // Hide all sections
+                    sections.forEach(section => section.classList.remove('active'));
+                    
+                    // Show target section
+                    document.getElementById(targetSection + '-section').classList.add('active');
+                });
+            });
+        });
+
         // Agregar algunos ejemplos comunes al hacer clic en los placeholders
         document.getElementById('ipAddress').addEventListener('focus', function() {
             if (!this.value) {
@@ -493,5 +729,5 @@
             }
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9899f2f59687f776',t:'MTc1OTYzNjE2Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99f238aed6e0b6ac',t:'MTc2MzI0NjEyMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
